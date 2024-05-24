@@ -22,7 +22,7 @@ jobs:
       with:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: "Все тесты пройдены успешно!"
+        message: "Все ок"
     - name: Telegram Notification on Failure
       if: failure()
       uses: appleboy/telegram-action@master
