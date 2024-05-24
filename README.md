@@ -76,3 +76,6 @@ java -cp ./main/java org.example.NumberProcessor ./main/resources/negative.txt
 ## Тестирование
 
 В директории `src/main/java/org/example` вы найдете класс `NumberProcessorTest.java`, который содержит юнит-тесты для проверки функциональности программы.
+
+![Java CI](https://github.com/maybebbaby/TZ_2/actions/workflows/java-ci.yml/badge.svg)
+
