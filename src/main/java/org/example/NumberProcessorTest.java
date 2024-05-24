@@ -91,7 +91,7 @@ class NumberProcessorTest {
     @Test
     void testPerformanceSum() {
         List<Integer> largeNumbers = generateLargeNumberList();
-        long startTime = System.nanoTime();
+        ong startTime = System.nanoTime();
         int sum = NumberProcessor._sum(largeNumbers);
         long endTime = System.nanoTime();
         System.out.println("Тест производительности - Sum: " + ((endTime - startTime) / 1_000_000) + " ms");
