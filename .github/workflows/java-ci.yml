@@ -23,10 +23,14 @@ jobs:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
         message: "Все ок"
+    - name: Capture Test Results
+      if: failure()
+      run: cat ${GITHUB_WORKSPACE}/target/surefire-reports/*.txt > test-results.txt
     - name: Telegram Notification on Failure
       if: failure()
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: "Некоторые тесты не пройдены."
+        message: "Некоторые тесты не пройдены:"
+        document: "${{ github.workspace }}/test-results.txt"
