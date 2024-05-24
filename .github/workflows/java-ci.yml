@@ -22,11 +22,11 @@ jobs:
       with:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: "Все тесты пройдены успешно! ✅"
+        message: "Все тесты пройдены успешно!"
     - name: Telegram Notification on Failure
       if: failure()
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: "Некоторые тесты не пройдены. ❌ Пожалуйста, проверьте."
+        message: "Некоторые тесты не пройдены."
