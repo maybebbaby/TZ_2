@@ -21,19 +21,20 @@ jobs:
       run: |
         mkdir -p ${{ github.workspace }}/test-results
         for file in ${GITHUB_WORKSPACE}/target/surefire-reports/*.xml; do
-          echo "Processing $file" >> ${{ github.workspace }}/test-results/failed_tests_summary.txt
-          # Extracting the names of failed tests
-          cat $file | grep '<testcase' | grep -B 1 '<failure' | grep -oP '(?<=name=").*?(?=")' >> ${{ github.workspace }}/test-results/failed_tests_summary.txt
+          # Extracting the names and messages of failed tests
+          echo "Failed tests in $file:" >> ${{ github.workspace }}/test-results/failed_tests_summary.txt
+          grep '<testcase' $file | grep -B 1 '<failure' | grep -oP '(?<=name=").*?(?=")|(?<=message=").*?(?=")' >> ${{ github.workspace }}/test-results/failed_tests_summary.txt
+          echo "" >> ${{ github.workspace }}/test-results/failed_tests_summary.txt
         done
-    - name: Telegram Notification on Failure
+    - name: Telegram Notification on Failure  # Отправка уведомления в Telegram в случае ошибки
       if: failure()
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_CHAT_ID }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: "Некоторые тесты не пройдены. См. подробности."
+        message: "Некоторые тесты не пройдены. См. подробности:"
         document: "${{ github.workspace }}/test-results/failed_tests_summary.txt"
-    - name: Telegram Notification on Success
+    - name: Telegram Notification on Success  # Отправка уведомления в Telegram, если все тесты прошли успешно
       if: success()
       uses: appleboy/telegram-action@master
       with:
