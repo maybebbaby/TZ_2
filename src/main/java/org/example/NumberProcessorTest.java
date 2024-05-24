@@ -100,7 +100,7 @@ class NumberProcessorTest {
     @Test
     void testPerformanceMult() {
         List<Integer> largeNumbers = generateLargeNumberList();
-        ong startTime = System.nanoTime();
+        long startTime = System.nanoTime();
         long mult = NumberProcessor._mult(largeNumbers);
         long endTime = System.nanoTime();
         System.out.println("Тест производительности - Mult: " + ((endTime - startTime) / 1_000_000) + " ms");
