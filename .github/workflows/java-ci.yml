@@ -23,8 +23,13 @@ jobs:
         for file in ${GITHUB_WORKSPACE}/target/surefire-reports/*.xml; do
           # Extracting the names and messages of failed tests
           echo "Failed tests in $file:" >> ${{ github.workspace }}/test-results/failed_tests_summary.txt
-          grep '<testcase' $file | grep -B 1 '<failure' | grep -oP '(?<=name=").*?(?=")|(?<=message=").*?(?=")' >> ${{ github.workspace }}/test-results/failed_tests_summary.txt
-          echo "" >> ${{ github.workspace }}/test-results/failed_tests_summary.txt
+          grep -oP '(?<=<testcase).*?(?=</testcase>)' $file | grep -Pzo '(?s)<testcase.*?name=".*?".*?<failure.*?>(.*?)</failure>' | while IFS= read -r match; do
+            test_name=$(echo $match | grep -oP '(?<=name=").*?(?=")')
+            error_message=$(echo $match | grep -oP '(?<=<failure message=").*?(?=")')
+            echo "Test: $test_name" >> ${{ github.workspace }}/test-results/failed_tests_summary.txt
+            echo "Error: $error_message" >> ${{ github.workspace }}/test-results/failed_tests_summary.txt
+            echo "" >> ${{ github.workspace }}/test-results/failed_tests_summary.txt
+          done
         done
     - name: Telegram Notification on Failure  # Отправка уведомления в Telegram в случае ошибки
       if: failure()
